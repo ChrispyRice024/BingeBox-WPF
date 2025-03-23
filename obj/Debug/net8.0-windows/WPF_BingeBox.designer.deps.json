@@ -1,0 +1,46 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "LibVLCSharp/3.9.2": {
+        "runtime": {
+          "lib/net8.0/LibVLCSharp.dll": {
+            "assemblyVersion": "3.9.2.0",
+            "fileVersion": "3.9.2.0"
+          }
+        }
+      },
+      "LibVLCSharp.WPF/3.9.2": {
+        "dependencies": {
+          "LibVLCSharp": "3.9.2"
+        },
+        "runtime": {
+          "lib/net6.0-windows7.0/LibVLCSharp.WPF.dll": {
+            "assemblyVersion": "3.9.2.0",
+            "fileVersion": "3.9.2.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "LibVLCSharp/3.9.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-PbDIVdrIIf9nMizePhv1BMoMSiIn04beCHD2MAhk2DcueckTQOLoHycXIW3lTXB+MSZ0PWWC8eGwFzz4NmxVKQ==",
+      "path": "libvlcsharp/3.9.2",
+      "hashPath": "libvlcsharp.3.9.2.nupkg.sha512"
+    },
+    "LibVLCSharp.WPF/3.9.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hl1+7pS3vjDIMHgfFbOtNTDaeTr4QSjN2cGWmFcMjJZmRaakWaeQ6LUgxSpBNPzRR7TAtqnDymjzVJUM5Fu0YQ==",
+      "path": "libvlcsharp.wpf/3.9.2",
+      "hashPath": "libvlcsharp.wpf.3.9.2.nupkg.sha512"
+    }
+  }
+}

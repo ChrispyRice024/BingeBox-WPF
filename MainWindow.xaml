@@ -1,0 +1,36 @@
+﻿<Window x:Class="WPF_BingeBox.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vlc="clr-namespace:LibVLCSharp.WPF;assembly=LibVLCSharp.WPF"
+        xmlns:controls="clr-namespace:WPF_BingeBox.Controls"
+        xmlns:local="clr-namespace:WPF_BingeBox"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid x:Name="MainGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <controls:ToolBar x:Name="ToolBar" Panel.ZIndex="10" Grid.ColumnSpan="2" Loaded="ToolBar_Loaded"/>
+
+            <Grid x:Name="OuterGrid" Grid.ColumnSpan="2" Panel.ZIndex="11" Grid.RowSpan="2"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <Grid x:Name="VideoControlWrapper" Panel.ZIndex="9" Grid.Row="1" Grid.Column="0">
+                <controls:VLCControl x:Name="VideoControl" Loaded="VideoControl_Loaded"/>
+            </Grid>
+
+            <Grid x:Name="PlaylistParent" Grid.Row="1" Panel.ZIndex="9" Grid.Column="1">
+                <controls:PlaylistControl x:Name="PlaylistControl" Grid.Row="0" Loaded="PlaylistControl_Loaded"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
