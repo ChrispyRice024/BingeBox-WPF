@@ -103,30 +103,24 @@ namespace WPF_BingeBox.Managers
         {
             List<Season> availableSeasons = series.Seasons
                 .Where(season => season.Episodes
-                .All(ep => !ep.IsRerun)).ToList();
-            int index = 0;
-            List<Episode> availableEpisodes = availableSeasons[index].Episodes
+                .Any(ep => !ep.IsRerun)).ToList();
+
+
+            if (availableSeasons.Count == 0)
+                return;
+            for(int i = 0; i < availableSeasons.Count; i++)
+            {
+                List<Episode> availableEpisodes = availableSeasons[i].Episodes
                 .Where(ep => !ep.IsRerun && !Playlist.Contains(ep))
                 .ToList();
-            if(availableEpisodes.Count == 0)
-            {
-                ++index;
-                Debug.WriteLine($"index: {index}");
-                availableEpisodes = availableSeasons[index].Episodes
-                    .Where(ep => !ep.IsRerun && !Playlist.Contains(ep))
-                    .ToList();
+
+                if(availableEpisodes.Count > 0)
+                {
+                    Playlist.Add(availableEpisodes[0]);
+                    return;
+                }
             }
-            if(availableSeasons.Count == 0)
-            {
-                return;
-            }
-            Debug.WriteLine($"availableEpisodes: {availableEpisodes.Count}");
-            foreach(Episode ep in availableEpisodes)
-            {
-                Debug.WriteLine($"Episode Title: {ep.EpisodeTitle}");
-            }
-            Debug.WriteLine($"Playlist count: {Playlist.Count}");
-            Playlist.Add(availableEpisodes[0]);
+            Debug.WriteLine("no more unwatched episodes");
         }
 
         //private void GetSeries(List<Series> shuffledList)

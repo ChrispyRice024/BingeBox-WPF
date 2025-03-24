@@ -924,3 +924,4 @@ C:\Users\chris\source\repos\WPF_BingeBox\obj\Debug\net8.0-windows10.0.26100.0\pr
 C:\Users\chris\source\repos\WPF_BingeBox\obj\Debug\net8.0-windows10.0.26100.0\qualifiers.txt
 C:\Users\chris\source\repos\WPF_BingeBox\obj\Debug\net8.0-windows10.0.26100.0\qualifiers.txt.intermediate
 C:\Users\chris\source\repos\WPF_BingeBox\obj\Debug\net8.0-windows10.0.26100.0\MultipleQualifiersPerDimensionFound.txt
+C:\Users\chris\source\repos\WPF_BingeBox\obj\Debug\net8.0-windows10.0.26100.0\WPF_BingeBox.sourcelink.json
