@@ -24,7 +24,7 @@ namespace WPF_BingeBox.Models
             EpisodePath = location;
             EpisodeTitle = episodeName;
             ParentSeries = parentSeries;
-            ParentSeason = "Season " + parentSeason;
+            ParentSeason = parentSeason;
             InitializeMediaAsync(location);
         }
 

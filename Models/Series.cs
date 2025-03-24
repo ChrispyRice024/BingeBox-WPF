@@ -106,6 +106,15 @@ namespace WPF_BingeBox.Models
                 }
             });
             //Seasons.Clear();
+
+            tempSeasons = tempSeasons.OrderBy(s =>
+            {
+                string seasonTitle = s.SeasonName ?? "";
+                if (seasonTitle.StartsWith("Season") && int.TryParse(seasonTitle.Substring(6), out int seasonNumber))
+                    return seasonNumber;
+                return 0;
+            }).ToList();
+
             Seasons.AddRange(tempSeasons);
 
             TotalEpisodes = Seasons.Sum(s => s.Episodes.Count);

@@ -30,7 +30,7 @@
 
             <StackPanel Grid.Row="3" Orientation="Horizontal">
                 <Label Content="Is The Series Episodic?" VerticalAlignment="Center"/>
-                <CheckBox x:Name="IsEpisodicChkBx" VerticalAlignment="Center"/>
+                <CheckBox x:Name="IsEpisodicChkBx" VerticalAlignment="Center" Click="IsEpisodicChkBx_Click" />
             </StackPanel>
 
             <Grid Grid.Row="4">

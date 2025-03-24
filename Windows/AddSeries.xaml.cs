@@ -100,5 +100,10 @@ namespace WPF_BingeBox
                 Debug.WriteLine($"New Exception When Creating Series: {ex}");
             }
         }
+
+        private void IsEpisodicChkBx_Click(object sender, RoutedEventArgs e)
+        {
+            IsEpisodic = IsEpisodicChkBx.IsChecked ?? false;
+        }
     }
 }
