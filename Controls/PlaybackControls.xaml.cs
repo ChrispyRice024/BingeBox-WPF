@@ -28,14 +28,19 @@ namespace WPF_BingeBox.Controls
         Thread.DispatcherTimer FadeTimer;
         public bool IsFullscreen = false;
         public int CurrentIndex = 0;
+        public Thread.DispatcherTimer VideoTimer;
         
 
         public PlaybackControls()
         {
             InitializeComponent();
 
-            TrackBar.Value = 0;
-            TrackBar.Maximum = 100;
+            VideoTimer = new Thread.DispatcherTimer();
+            VideoTimer.Interval = TimeSpan.FromMilliseconds(100);
+            VideoTimer.Tick += VideoTimer_Tick;
+            
+            //TrackBar.Value = 0;
+            //TrackBar.Maximum = 100;
 
             Parent = this.Parent as VLCControl;
 
@@ -52,6 +57,10 @@ namespace WPF_BingeBox.Controls
             Parent = parent;
             MainWindow = mainWindow;
             Player = Parent.VideoPlayer.MediaPlayer;
+
+            VideoTimer = new Thread.DispatcherTimer();
+            VideoTimer.Interval = TimeSpan.FromMilliseconds(100);
+            VideoTimer.Tick += VideoTimer_Tick;
 
             this.Height = Parent.Height;
             this.Width = Parent.Width;
@@ -83,10 +92,23 @@ namespace WPF_BingeBox.Controls
         {
             Parent.VideoPlayer.Content = this;
             Parent.VideoPlayer.MediaPlayer.Play();
+            VideoTimer.Start();
         }
 
         
+        private void VideoTimer_Tick(object sender, EventArgs e)
+        {
+            Debug.WriteLine($"TimeLeft: {Parent.VideoPlayer.MediaPlayer.Time}");
 
+            if (Parent.VideoPlayer.MediaPlayer != null &&
+                Parent.VideoPlayer.MediaPlayer.Media.Duration != 0 &&
+                Parent.VideoPlayer.MediaPlayer.IsPlaying)
+            {
+                TrackBar.Maximum = Parent.VideoPlayer.MediaPlayer.Media.Duration;
+                TrackBar.Value = Parent.VideoPlayer.MediaPlayer.Time;
+            }
+                
+        }
         public void PrevBtn_Click(object sender, SysWin.RoutedEventArgs e)
         {
             if (CurrentIndex == 0)
@@ -116,15 +138,18 @@ namespace WPF_BingeBox.Controls
                     if (Parent.VideoPlayer.MediaPlayer.IsPlaying)
                     {
                         player.Pause();
+                        //VideoTimer.Stop();
                     }
                     else
                     {
                         player.Play();
+                        VideoTimer.Start();
                     }
                 }
                 else
                 {
                     Parent.SetNewVideo(CurrentIndex);
+                    VideoTimer.Start();
                     player.Play();
                 }
             }

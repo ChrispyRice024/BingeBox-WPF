@@ -11,7 +11,6 @@
     <Grid>
         <Grid x:Name="PlayerGrid">
             <vlc:VideoView x:Name="VideoPlayer"
-                           MediaElement.MediaEnded="VideoPlayer_MediaEnded"
                            Background="Black">
                 <local:PlaybackControls x:Name="VideoControls"/>
             </vlc:VideoView>

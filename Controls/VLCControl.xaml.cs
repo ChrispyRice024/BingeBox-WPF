@@ -63,6 +63,15 @@ namespace WPF_BingeBox.Controls
             {
                 Debug.WriteLine($"Encountered Error in VLC Media Player: {e}");
             };
+            Player.EndReached += (s, e) =>
+            {
+                PlaylistManager.MarkAsRerun(VideoPlayer.MediaPlayer, PlaylistManager.Playlist[VideoControls.CurrentIndex]);
+                VideoControls.CurrentIndex += 1;
+                SetNewVideo(VideoControls.CurrentIndex);
+
+                VideoPlayer.MediaPlayer.Play();
+            };
+
 
             VideoPlayer.MediaPlayer = Player;
         }
@@ -73,7 +82,26 @@ namespace WPF_BingeBox.Controls
                 new Uri(PlaylistManager.Playlist[index].EpisodePath).AbsoluteUri,
                 FromType.FromLocation);
 
+            VideoControls.TrackBar.Maximum = Video.Duration / 1000.0;
+            
             Player.Media = Video;
+            
+            VideoParse();
+            Debug.WriteLine($"VideoLength(SetNewVideo): {Player.Media.Duration} \n" +
+                $"VideoTime(SetNewVideo): {Player.Time}");
+        }
+
+        private void VideoParse()
+        {
+            Player.Media.ParsedChanged += (s, e) =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    Debug.WriteLine($"MediaParsed: {Player.Media.Duration}");
+                    VideoControls.TrackBar.Maximum = Player.Media.Duration;
+                    VideoControls.VideoTimer.Start();
+                });
+            };
         }
 
         private void Player_MediaChanged(object? sender, MediaPlayerMediaChangedEventArgs e)
@@ -84,9 +112,10 @@ namespace WPF_BingeBox.Controls
             VideoPlayer.MediaPlayer.Play();
         }
 
-        private void VideoPlayer_MediaEnded(object sender, RoutedEventArgs e)
+        private void ChangeVideo()
         {
             PlaylistManager.MarkAsRerun(VideoPlayer.MediaPlayer, PlaylistManager.Playlist[VideoControls.CurrentIndex]);
+            VideoControls.CurrentIndex += 1;
             SetNewVideo(VideoControls.CurrentIndex);
 
             VideoPlayer.MediaPlayer.Play();
