@@ -38,18 +38,6 @@ namespace WPF_BingeBox.Controls
             this.DataContext = Parent;
 
             InitializeComponent();
-
-
-
-            //if(Parent != null)
-            //{
-            //    this.DataContext = Parent;
-            //}
-            //else
-            //{
-            //    Debug.WriteLine("Parent Window is null in PlaylistControl");
-            //}
-
         }
 
         private void PlaylistLst_Loaded(object sender, RoutedEventArgs e)
@@ -64,10 +52,7 @@ namespace WPF_BingeBox.Controls
         private void ShuffleBtn_Click(object sender, RoutedEventArgs e)
         {
             IPlaylistManager.PopulatePlaylist(Parent.FileManager.FullSeriesList);
-            foreach (Episode item in Parent.Playlist)
-            {
-                Debug.WriteLine($"Episode Name: {item.EpisodeTitle}");
-            }
+            PlaylistLst.Items.Refresh();
         }
     }
 }

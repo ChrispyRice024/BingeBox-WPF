@@ -64,6 +64,7 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         PlaylistManager.PropertyChanged += (s, e) =>
         {
             Playlist = PlaylistManager.Playlist;
+            PlaylistControl.PlaylistLst.Items.Refresh();
         };
 
         //DataContext = this;
@@ -79,6 +80,10 @@ public partial class MainWindow : Window, INotifyPropertyChanged
         PlaylistControl.DataContext = this;
         PlaylistControl.Parent = this;
 
+        //PlaylistControl.IPlaylistManager.Playlist.CollectionChanged += (s, e) =>
+        //{
+        //    PlaylistControl.PlaylistLst.Items.Refresh();
+        //};
         //PlaylistManager.PopulatePlaylist();
     }
 

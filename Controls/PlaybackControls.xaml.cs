@@ -35,13 +35,6 @@ namespace WPF_BingeBox.Controls
         {
             InitializeComponent();
 
-            VideoTimer = new Thread.DispatcherTimer();
-            VideoTimer.Interval = TimeSpan.FromMilliseconds(100);
-            VideoTimer.Tick += VideoTimer_Tick;
-            
-            //TrackBar.Value = 0;
-            //TrackBar.Maximum = 100;
-
             Parent = this.Parent as VLCControl;
 
             SetEvents();
@@ -51,16 +44,9 @@ namespace WPF_BingeBox.Controls
         {
             InitializeComponent();
 
-            TrackBar.Value = 0;
-            TrackBar.Maximum = 100;
-
             Parent = parent;
             MainWindow = mainWindow;
             Player = Parent.VideoPlayer.MediaPlayer;
-
-            VideoTimer = new Thread.DispatcherTimer();
-            VideoTimer.Interval = TimeSpan.FromMilliseconds(100);
-            VideoTimer.Tick += VideoTimer_Tick;
 
             this.Height = Parent.Height;
             this.Width = Parent.Width;
@@ -86,6 +72,10 @@ namespace WPF_BingeBox.Controls
                 FadeTimer.Stop();
                 FadeTimer.Start();
             };
+            VideoTimer = new Thread.DispatcherTimer();
+            VideoTimer.Interval = TimeSpan.FromMilliseconds(100);
+            VideoTimer.Tick += VideoTimer_Tick;
+            TrackBar.ValueChanged += TrackBar_ValueChanged;
         }
 
         public void PlayVideo()
@@ -108,6 +98,16 @@ namespace WPF_BingeBox.Controls
                 TrackBar.Value = Parent.VideoPlayer.MediaPlayer.Time;
             }
                 
+        }
+        private void TrackBar_ValueChanged(object sender, EventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if(Math.Abs(Parent.VideoPlayer.MediaPlayer.Time - TrackBar.Value) > 0.5)
+                {
+                    Parent.VideoPlayer.MediaPlayer.Position = (float)(TrackBar.Value / Parent.VideoPlayer.MediaPlayer.Media.Duration);
+                }
+            });
         }
         public void PrevBtn_Click(object sender, SysWin.RoutedEventArgs e)
         {
@@ -165,6 +165,7 @@ namespace WPF_BingeBox.Controls
             player.Stop();
             CurrentIndex++;
             Parent.SetNewVideo(CurrentIndex);
+            MainWindow.PlaylistManager.PopulatePlaylist(Parent.FileManager.FullSeriesList);
         }
 
         public void FullScreenBtn_Click(object sender, SysWin.RoutedEventArgs e)

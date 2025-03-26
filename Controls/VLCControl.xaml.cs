@@ -65,14 +65,34 @@ namespace WPF_BingeBox.Controls
             };
             Player.EndReached += (s, e) =>
             {
-                PlaylistManager.MarkAsRerun(VideoPlayer.MediaPlayer, PlaylistManager.Playlist[VideoControls.CurrentIndex]);
-                VideoControls.CurrentIndex += 1;
-                SetNewVideo(VideoControls.CurrentIndex);
+                Debug.WriteLine($"Start of EndReached");
 
-                VideoPlayer.MediaPlayer.Play();
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    try
+                    {
+                        PlaylistManager.MarkAsRerun(VideoPlayer.MediaPlayer,
+                            PlaylistManager.Playlist[VideoControls.CurrentIndex]);
+                        VideoControls.CurrentIndex += 1;
+
+                        if(VideoControls.CurrentIndex < PlaylistManager.Playlist.Count)
+                        {
+                            SetNewVideo(VideoControls.CurrentIndex);
+                            VideoPlayer.MediaPlayer.Play();
+                        }
+                        else
+                        {
+                            VideoPlayer.MediaPlayer.Stop();
+                            VideoControls.CurrentIndex = 0;
+                            Debug.WriteLine("Playlist Ended");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Exception: {ex}");
+                    }
+                }));
             };
-
-
             VideoPlayer.MediaPlayer = Player;
         }
 
@@ -81,8 +101,11 @@ namespace WPF_BingeBox.Controls
             Video = new Media(libVlc,
                 new Uri(PlaylistManager.Playlist[index].EpisodePath).AbsoluteUri,
                 FromType.FromLocation);
-
-            VideoControls.TrackBar.Maximum = Video.Duration / 1000.0;
+            Dispatcher.Invoke(() =>
+            {
+                VideoControls.TrackBar.Maximum = Video.Duration / 1000.0;
+                VideoControls.TrackBar.Value = 0;
+            });
             
             Player.Media = Video;
             
@@ -110,6 +133,7 @@ namespace WPF_BingeBox.Controls
                 return;
 
             VideoPlayer.MediaPlayer.Play();
+            PlaylistManager.PopulatePlaylist(FileManager.FullSeriesList);
         }
 
         private void ChangeVideo()

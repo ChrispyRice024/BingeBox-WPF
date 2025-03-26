@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Linq.Expressions;
 using System.Security.Cryptography;
 using Windows.Media.Playlists;
+using WPF_BingeBox.Controls;
 
 namespace WPF_BingeBox.Managers
 {
@@ -75,7 +76,7 @@ namespace WPF_BingeBox.Managers
                         unfinishedEpisodes = shuffledList[index].Seasons
                             .SelectMany(s => s.Episodes)
                             .Where(ep => !ep.IsRerun).ToList();
-                        
+
                         List<Episode> shuffledEpisodes = ShuffleList(unfinishedEpisodes);
                         int randomIndex = rand.Next(shuffledEpisodes.Count);
                         if (!Playlist.Any(ep => ep == shuffledEpisodes[randomIndex]))
@@ -95,6 +96,34 @@ namespace WPF_BingeBox.Managers
                         shuffledList = ShuffleList(seriesList);
                         index = 0;
                     }
+                }
+            }
+            else
+            {
+                if (shuffledList[index].IsEpisodic)
+                {
+                    unfinishedEpisodes = shuffledList[index].Seasons
+                        .SelectMany(s => s.Episodes)
+                        .Where(ep => !ep.IsRerun).ToList();
+
+                    List<Episode> shuffledEpisodes = ShuffleList(unfinishedEpisodes);
+                    int randomIndex = rand.Next(shuffledEpisodes.Count);
+                    if (!Playlist.Any(ep => ep == shuffledEpisodes[randomIndex]))
+                    {
+                        Playlist.Add(shuffledEpisodes[randomIndex]);
+                    }
+                }
+                else
+                {
+                    GetSeason(shuffledList[index]);
+                    Debug.WriteLine($"totalEpisodes: {totalEpisodes}");
+                    Debug.WriteLine($"While Playlist.Count: {Playlist.Count}");
+                }
+                ++index;
+                if (index > shuffledList.Count - 1)
+                {
+                    shuffledList = ShuffleList(seriesList);
+                    index = 0;
                 }
             }
         }

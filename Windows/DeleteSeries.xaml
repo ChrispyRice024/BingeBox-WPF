@@ -1,0 +1,39 @@
+﻿<Window x:Class="WPF_BingeBox.Windows.DeleteSeries"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPF_BingeBox.Windows"
+        mc:Ignorable="d"
+        d:DesignHeight="450" d:DesignWidth="400"
+        Title="DeleteSeries" Height="450" Width="800">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition/>
+                <RowDefinition Height=".15*"/>
+            </Grid.RowDefinitions>
+            <ListView x:Name="DeleteLst"
+                      Grid.Row="1"
+                      Margin="15,0"
+                      ItemsSource="{Binding SeriesList}"
+                      ScrollViewer.CanContentScroll="true"
+                      Loaded="DeleteLst_Loaded">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="Auto" Header="Series Title" DisplayMemberBinding="{Binding SeriesName}"/>
+                        <GridViewColumn Width="Auto" Header="Total Seasons" DisplayMemberBinding="{Binding TotalSeasons}"/>
+                        <GridViewColumn Width="Auto" Header="Total Episodes" DisplayMemberBinding="{Binding TotalEpisodes}"/>
+                        <GridViewColumn Width="Auto" Header="Percentage Watched" DisplayMemberBinding="{Binding WatchedPercentage}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button x:Name="DeleteBtn"
+                    Height="30" Width="90"
+                    Grid.Row="3"
+                    Content="Delete Series"
+                    Click="DeleteBtn_Click"/>
+        </Grid>
+    </Grid>
+</Window>
